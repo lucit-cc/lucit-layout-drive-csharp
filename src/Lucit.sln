@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lucit.LayoutDrive.Client", "Lucit.LayoutDrive.Client\Lucit.LayoutDrive.Client.csproj", "{E74564BA-8560-4AEA-9894-7EA41A25D3F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CDEE9C22-1D33-470F-BBE5-5D1DC8AA5145}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lucit.LayoutDrive.Client.Tests", "Lucit.LayoutDrive.Client.Tests\Lucit.LayoutDrive.Client.Tests.csproj", "{8301CD69-0687-4788-9FEB-88BF76873399}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E74564BA-8560-4AEA-9894-7EA41A25D3F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E74564BA-8560-4AEA-9894-7EA41A25D3F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E74564BA-8560-4AEA-9894-7EA41A25D3F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E74564BA-8560-4AEA-9894-7EA41A25D3F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8301CD69-0687-4788-9FEB-88BF76873399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8301CD69-0687-4788-9FEB-88BF76873399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8301CD69-0687-4788-9FEB-88BF76873399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8301CD69-0687-4788-9FEB-88BF76873399}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8301CD69-0687-4788-9FEB-88BF76873399} = {CDEE9C22-1D33-470F-BBE5-5D1DC8AA5145}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8DAB5A82-6240-41F4-A507-F42124835EA2}
+	EndGlobalSection
+EndGlobal
