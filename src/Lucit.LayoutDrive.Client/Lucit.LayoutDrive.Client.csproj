@@ -1,7 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.1;netstandard2.0</TargetFrameworks>
+    <Description>Csharp wrapper for Lucit LayoutDrive api requests.</Description>
+    <RepositoryUrl>https://github.com/lucit-cc/lucit-layout-drive-csharp</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>lucit</PackageTags>
+    <Company>Lucit LLC</Company>
+    <Authors>Ihor Golovatskiy</Authors>
   </PropertyGroup>
 
   <ItemGroup>

@@ -51,36 +51,46 @@ namespace Lucit.LayoutDrive.Client.Extensions
             if (method == HttpMethod.Post)
             {
                 var content = new StringContent(JsonConvert.SerializeObject(values, serializerSettings), Encoding.UTF8, "application/json");
-                response = await httpClient.PostAsync(url, content);
+                response = await httpClient.PostAsync(url, content)
+                                           .ConfigureAwait(false);
             }
             else if (method.Method.Equals("PATCH"))
             {
                 var content = new StringContent(JsonConvert.SerializeObject(values, serializerSettings), Encoding.UTF8, "application/json");
                 var request = new HttpRequestMessage(method, url) { Content = content };
 
-                response = await httpClient.SendAsync(request);
+                response = await httpClient.SendAsync(request)
+                                           .ConfigureAwait(false);
             }
             else if (method == HttpMethod.Put)
             {
                 var content = new StringContent(JsonConvert.SerializeObject(values, serializerSettings), Encoding.UTF8, "application/json");
-                response = await httpClient.PutAsync(url, content);
+                response = await httpClient.PutAsync(url, content)
+                                           .ConfigureAwait(false);
             }
             else if (method == HttpMethod.Delete)
             {
-                response = await httpClient.DeleteAsync(url);
+                response = await httpClient.DeleteAsync(url)
+                                            .ConfigureAwait(false);
             }
             else
             {
-                response = await httpClient.GetAsync(url);
+                response = await httpClient.GetAsync(url)
+                                           .ConfigureAwait(false);
             }
+
+            var responseRaw = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             if (!response.IsSuccessStatusCode)
             {
-                result.Exception = new LayoutDriveException(await response.Content.ReadAsStringAsync());
+                result.Exception = new LayoutDriveException($"Something went wong... Http Code: {response.StatusCode}")
+                {
+                    RawResponse = responseRaw
+                };
                 return result;
             }
 
-            result.Data = JsonConvert.DeserializeObject<TReceive>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+            result.Data = JsonConvert.DeserializeObject<TReceive>(responseRaw);
             return result;
         }
     }

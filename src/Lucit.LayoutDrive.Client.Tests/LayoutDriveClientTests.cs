@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Lucit.LayoutDrive.Client.Models;
 using Moq;
 using Moq.Protected;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Lucit.LayoutDrive.Client.Tests
@@ -28,23 +29,44 @@ namespace Lucit.LayoutDrive.Client.Tests
         }
 
         [Test]
-        public async Task ShouldGetCreatives()
+        [TestCase(true, "{\"lucit_layout_drive\":{\"source\":\"Layout by Lucit\",\"source_href\":\"https:\\/\\/lucit.cc\\/lucit-layout\",\"account\":\"DF Motors (Demo)\",\"account_id\":\"lch-4C9E\",\"layout_export_id\":\"lch-4C9D\",\"layout_export_run_id\":\"49548\",\"generated_datetime\":\"2020-08-19T18:09:02+00:00\",\"layout_drive_schema_version\":\"1.0\",\"item_sets\":[{\"location_id\":\"SC_MH_1\",\"location_name\":\"1010 N Draper Blvd\",\"lucit_layout_digital_board_id\":\"19302\",\"item_count\":\"6\",\"item_total_weight\":\"60\",\"item_selected_index\":\"5\",\"items\":[{\"creative_id\":\"C1-4C9D-LP-4PcU\",\"creative_datetime\":\"2020-07-21T19:15:06+00:00\",\"id\":\"51798\",\"object_class\":\"InventoryPhoto\",\"name\":\"16914A 2012 Dodge Durango\",\"slug\":\"16914a_2012_dodge_durango\",\"src\":\"https:\\/\\/lucore-bucket-layout-prod1.s3.us-east-2.amazonaws.com\\/1\\/3599\\/img_5f173eb9b72ee_2822f2efb54aed24a43a.png\",\"width\":\"1856\",\"height\":\"576\",\"weight\":\"10\",\"weight_pct\":\"0.16666667\"}]}]}}")]
+        [TestCase(false, "{\"lucit_layout_drive\":{\"source\":\"Layout by Lucit\",\"source_href\":\"https:\\/\\/lucit.cc\\/lucit-layout\",\"account\":\"DF Motors (Demo)\",\"account_id\":\"lch-4C9E\",\"layout_export_id\":\"lch-4C9D\",\"layout_export_run_id\":\"49548\",\"generated_datetime\":\"2020-08-19T18:09:02+00:00\",\"layout_drive_schema_version\":\"1.0\",\"item_sets\":[{\"location_id\":\"SC_MH_1\",\"location_name\":\"1010 N Draper Blvd\",\"lucit_layout_digital_board_id\":\"19302\",\"item_count\":\"6\",\"item_total_weight\":\"60\",\"item_selected_index\":\"5\",\"items\":[]}]}}")]
+        [TestCase(false, "{\"lucit_layout_drive\":{\"source\":\"Layout by Lucit\",\"source_href\":\"https:\\/\\/lucit.cc\\/lucit-layout\",\"account\":\"DF Motors (Demo)\",\"account_id\":\"lch-4C9E\",\"layout_export_id\":\"lch-4C9D\",\"layout_export_run_id\":\"49548\",\"generated_datetime\":\"2020-08-19T18:09:02+00:00\",\"layout_drive_schema_version\":\"1.0\",\"item_sets\":[]}}")]
+        [TestCase(false, "{\"lucit_layout_drive\":{}}")]
+        [TestCase(false, "{}")]
+        public async Task ShouldGetCreative(bool pass, string apiResponse)
         {
             //Arrange
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent("[]")
+                Content = new StringContent(apiResponse)
             };
-            var filter = new CreativesFilter(5);
+            var exportId = "lch-4C9D";
+            var locationId = "SC_MH_1";
             var client = BuildClient(response);
 
             //Act
-            var result = await client.GetCreativesAsync(filter);
+            var result = await client.GetCreativeAsync(exportId, locationId);
 
             //Assert
-            Assert.IsTrue(result.Count == 0);
+            Assert.IsTrue(pass && result != null 
+                          || !pass && result == null);
         }
 
+        [Test]
+        public void ShouldParseCreative()
+        {
+            //Arrange
+            var json = "{\"creative_id\":\"C1-4C9D-LP-4PcU\",\"creative_datetime\":\"2020-07-21T19:15:06+00:00\",\"id\":\"51798\",\"object_class\":\"InventoryPhoto\",\"name\":\"16914A 2012 Dodge Durango\",\"slug\":\"16914a_2012_dodge_durango\",\"src\":\"https:\\/\\/lucore-bucket-layout-prod1.s3.us-east-2.amazonaws.com\\/1\\/3599\\/img_5f173eb9b72ee_2822f2efb54aed24a43a.png\",\"width\":\"1856\",\"height\":\"576\",\"weight\":\"10\",\"weight_pct\":\"0.16666667\"}";
+
+            //Act
+            var result = JsonConvert.DeserializeObject<Creative>(json);
+
+            //Assert
+            Assert.IsTrue(result.DateTime != DateTime.MinValue
+                        && result.WeightPercentage > 0
+                        && result.Height > 0);
+        }
 
         [Test]
         public async Task ShouldPostPingBack()
@@ -57,7 +79,7 @@ namespace Lucit.LayoutDrive.Client.Tests
             var pingBackRequest = new PingBackRequest
             {
                 ItemId = 1523,
-                LocationId = 2,
+                LocationId = "2",
                 PlayDateTime = DateTime.UtcNow,
                 Duration = TimeSpan.FromHours(1)
             };
@@ -81,7 +103,7 @@ namespace Lucit.LayoutDrive.Client.Tests
             var pingBackRequest = new PingBackRequest
             {
                 ItemId = 1523,
-                LocationId = 2,
+                LocationId = "2",
                 PlayDateTime = DateTime.UtcNow,
                 Duration = TimeSpan.FromHours(1)
             };

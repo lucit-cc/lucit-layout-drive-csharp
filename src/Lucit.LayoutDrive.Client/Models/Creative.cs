@@ -16,6 +16,7 @@ namespace Lucit.LayoutDrive.Client.Models
         [JsonProperty("weight_pct")]
         public decimal WeightPercentage { get; set; }
 
+        [JsonProperty("creative_datetime")]
         public DateTime DateTime { get; set; }
     }
 }

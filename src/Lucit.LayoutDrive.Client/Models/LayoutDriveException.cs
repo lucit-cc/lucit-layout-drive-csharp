@@ -4,6 +4,7 @@ namespace Lucit.LayoutDrive.Client.Models
 {
     public class LayoutDriveException : Exception
     {
+        public string RawResponse { get; set; }
         public LayoutDriveException(string message)
         : base(message)
         {
