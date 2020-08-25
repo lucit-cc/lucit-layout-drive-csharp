@@ -2,14 +2,14 @@
 
 namespace Lucit.LayoutDrive.Client.Models
 {
-    public class PingBackRequest
+    public class SubmitPlayRequest
     {
-        public int ItemId { get; set; }
+        public string CreativeId { get; set; }
 
         /// <summary>
-        /// The location id (digital display id)
+        /// The lucit_layout_digital_board_id that the creative ran on
         /// </summary>
-        public string LocationId { get; set; }
+        public int DigitalBoardId { get; set; }
 
         /// <summary>
         /// The play date time from your system in UTC

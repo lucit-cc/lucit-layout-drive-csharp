@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Lucit.LayoutDrive.Client.Models;
 using NUnit.Framework;
@@ -31,7 +32,7 @@ namespace Lucit.LayoutDrive.Client.Tests.Integration
             var result = await client.GetCreativeAsync(exportId, locationId);
 
             //Assert
-            Assert.IsTrue(result != null);
+            Assert.IsTrue(result?.Any());
         }
 
         [Test]
@@ -49,6 +50,26 @@ namespace Lucit.LayoutDrive.Client.Tests.Integration
 
             //Act
             await client.PingBackAsync(pingBackRequest);
+
+            //Assert
+            Assert.Pass();
+        }
+
+        [Test]
+        public async Task ShouldSubmitPlay()
+        {
+            //Arrange
+            var playRequest = new SubmitPlayRequest
+            {
+                PlayDateTime = DateTime.UtcNow,
+                Duration = TimeSpan.FromHours(1),
+                DigitalBoardId = 19302,
+                CreativeId = "C1-4C9D-LP-4V4Y"
+            };
+            var client = BuildClient();
+
+            //Act
+            await client.SubmitPlayAsync(playRequest);
 
             //Assert
             Assert.Pass();

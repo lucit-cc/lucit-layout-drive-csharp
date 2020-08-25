@@ -49,10 +49,12 @@ namespace Lucit.LayoutDrive.Client
         }
 
         /// <summary>
-        /// Pull Creative to be shown in specific locationId
+        /// Pull Creative to be shown
         /// </summary>
-        /// <returns>Creative or throw LayoutDriveException if something went wrong</returns>
-        public async Task<Creative> GetCreativeAsync(string exportId, string locationId)
+        /// <param name="exportId">The export id in string lch-id format</param>
+        /// <param name="locationId">The digital display id that you are fetching for</param>
+        /// <returns>List of lucit locations or empty list if something went wrong</returns>
+        public async Task<List<LucitLocation>> GetCreativeAsync(string exportId, string locationId = null)
         {
             var queryString = new Dictionary<string, string>
             {
@@ -75,18 +77,13 @@ namespace Lucit.LayoutDrive.Client
                 throw response.Exception;
             }
 
-            var creative = responseObject?["lucit_layout_drive"]?["item_sets"]?.First?["items"]?.First?.ToObject<Creative>();
-
-            return creative ??
-                   throw new LayoutDriveException($"Can't pull creative from Layout Drive Api.")
-                   {
-                       RawResponse = responseObject?.ToString()
-                   };
+            return responseObject?["lucit_layout_drive"]?["item_sets"]?.ToObject<List<LucitLocation>>() ?? new List<LucitLocation>();
         }
 
         /// <summary>
         /// Post PingBack 
         /// </summary>
+        [Obsolete("This method will be removed soon, use SubmitPlayAsync")]
         public async Task PingBackAsync(PingBackRequest request)
         {
             var queryString = new Dictionary<string, string>
@@ -106,6 +103,34 @@ namespace Lucit.LayoutDrive.Client
 
             var response = await HttpClient.GetAsync<JToken>(uriBuilder.Uri.PathAndQuery)
                                            .ConfigureAwait(false);
+
+            if (response.IsSuccess)
+            {
+                return;
+            }
+
+            throw response.Exception;
+        }
+
+        public async Task SubmitPlayAsync(SubmitPlayRequest request)
+        {
+            var queryString = new Dictionary<string, string>
+            {
+                { "creative_id", request.CreativeId },
+                { "lucit_layout_digital_board_id", request.DigitalBoardId.ToString() },
+                { "play_datetime", request.PlayDateTime.ToString("O") },
+                { "duration", request.Duration.TotalSeconds.ToString("F") },
+            };
+
+            var uriBuilder = new UriBuilder
+            {
+                Path = Routes.Play,
+                Query = queryString.Serialize()
+            };
+
+
+            var response = await HttpClient.GetAsync<JToken>(uriBuilder.Uri.PathAndQuery)
+                .ConfigureAwait(false);
 
             if (response.IsSuccess)
             {

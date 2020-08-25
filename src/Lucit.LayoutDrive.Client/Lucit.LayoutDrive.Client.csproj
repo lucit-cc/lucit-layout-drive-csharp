@@ -2,12 +2,17 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.1;netstandard2.0</TargetFrameworks>
-    <Description>Csharp wrapper for Lucit LayoutDrive api requests.</Description>
+    <Description>Csharp wrapper for Lucit LayoutDrive api requests such as GetCreative and Post PingBack</Description>
     <RepositoryUrl>https://github.com/lucit-cc/lucit-layout-drive-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>lucit</PackageTags>
     <Company>Lucit LLC</Company>
     <Authors>Ihor Golovatskiy</Authors>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/lucit-cc/lucit-layout-drive-csharp</PackageProjectUrl>
+    <PackageReleaseNotes>Implemented LayoutDriveClient with abilities to GetCreative and PingBack</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
