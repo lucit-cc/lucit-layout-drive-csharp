@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore  src/Lucit.sln
     - name: Test
-      run: dotnet test --no-restore --verbosity normal src/Lucit.sln
+      run: dotnet test --filter TestCategory!=Integration --no-restore --verbosity normal src/Lucit.sln
