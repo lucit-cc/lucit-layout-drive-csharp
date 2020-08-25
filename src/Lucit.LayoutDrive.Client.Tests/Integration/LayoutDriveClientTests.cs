@@ -20,6 +20,7 @@ namespace Lucit.LayoutDrive.Client.Tests.Integration
         }
 
         [Test]
+        [Category(Constants.Categories.Integration)]
         [TestCase("lch-4C9D", null)]
         [TestCase("11", null)]
         [TestCase("lch-4C9D", "SC_MH_1")]
@@ -36,6 +37,7 @@ namespace Lucit.LayoutDrive.Client.Tests.Integration
         }
 
         [Test]
+        [Category(Constants.Categories.Integration)]
         public async Task ShouldPostPingBack()
         {
             //Arrange
@@ -56,6 +58,7 @@ namespace Lucit.LayoutDrive.Client.Tests.Integration
         }
 
         [Test]
+        [Category(Constants.Categories.Integration)]
         public async Task ShouldSubmitPlay()
         {
             //Arrange
