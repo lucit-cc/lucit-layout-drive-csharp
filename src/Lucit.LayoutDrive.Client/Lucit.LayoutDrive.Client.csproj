@@ -13,7 +13,7 @@
     <PackageReleaseNotes>Implemented LayoutDriveClient with abilities to GetCreative and PingBack</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
