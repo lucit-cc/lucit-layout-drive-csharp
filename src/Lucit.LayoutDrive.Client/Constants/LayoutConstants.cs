@@ -5,5 +5,7 @@
         public const string ApiUrl = "https://layout.lucit.cc/api/v1/";
 
         public const string TokenQueryStringName = "api_token";
+
+        public const string Md5HashAlgo = "md5";
     }
 }
