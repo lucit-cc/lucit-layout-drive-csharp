@@ -1,9 +1,11 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Lucit.LayoutDrive.Client.Constants;
 using Lucit.LayoutDrive.Client.Models;
 using Moq;
 using Moq.Protected;
@@ -136,6 +138,33 @@ namespace Lucit.LayoutDrive.Client.Tests
 
             //Assert
             Assert.Pass();
+        }
+
+
+        [Test]
+        [TestCase("DA31848DA1B903566AA7CF002424CB0B", "responses/creative_image.png", true)]
+        [TestCase("da31848da1b903566aa7cf002424cb0b", "responses/creative_image.png", true)]
+        [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "responses/creative_image.png", false)]
+        public async Task ShouldValidateItemHash(string hash, string imageSrc, bool expectedIsValidHash)
+        {
+            //Arrange
+            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(await File.ReadAllBytesAsync(imageSrc))
+            };
+            var item = new Creative
+            {
+                Src = "https://google.com/",
+                HashAlgorithm = LayoutConstants.Md5HashAlgo,
+                Hash = hash
+            };
+            var client = BuildClient(response);
+
+            //Act
+            var isValidHash = await client.ValidateItemHashAsync(item);
+
+            //Assert
+            Assert.AreEqual(expectedIsValidHash, isValidHash);
         }
 
         private LayoutDriveClient BuildClient(HttpResponseMessage response, string token = "test_token")

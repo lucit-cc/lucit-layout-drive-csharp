@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Lucit.LayoutDrive.Client.Constants;
 using Lucit.LayoutDrive.Client.Extensions;
+using Lucit.LayoutDrive.Client.Helpers;
 using Lucit.LayoutDrive.Client.Models;
 using Newtonsoft.Json.Linq;
 
@@ -12,6 +14,14 @@ namespace Lucit.LayoutDrive.Client
     public class LayoutDriveClient : IDisposable
     {
         public HttpClient HttpClient { get; }
+
+        /// <summary>
+        /// Algorithms supported by this library in order to validate item hash
+        /// </summary>
+        internal List<string> SupportedAlgorithms = new List<string>
+        {
+            LayoutConstants.Md5HashAlgo
+        };
 
         /// <param name="token">Lucit Api Token</param>
         public LayoutDriveClient(string token)
@@ -138,6 +148,28 @@ namespace Lucit.LayoutDrive.Client
             }
 
             throw response.Exception;
+        }
+
+        public async Task<bool> ValidateItemHashAsync(Creative item)
+        {
+            if (SupportedAlgorithms.All(a => item.HashAlgorithm?.ToLower() != a))
+            {
+                throw new LayoutDriveException($"hash_algo {item.HashAlgorithm} is not supported by this library");
+            }
+
+            if (!Uri.IsWellFormedUriString(item.Src, UriKind.Absolute))
+            {
+                throw new LayoutDriveException($"Item src '{item.Src}' is not valid url");
+            }
+
+            var response = await HttpClient.GetAsync(item.Src)
+                                           .ConfigureAwait(false);
+
+            var content = await response.Content.ReadAsByteArrayAsync()
+                .ConfigureAwait(false);
+
+
+            return item.Hash?.ToLower() == CryptoHelper.CreateMd5(content).ToLower();
         }
 
         public void Dispose()
