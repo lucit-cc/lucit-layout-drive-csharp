@@ -78,6 +78,25 @@ namespace Lucit.LayoutDrive.Client.Tests.Integration
             Assert.Pass();
         }
 
+        [Test]
+        [Category(Constants.Categories.Integration)]
+        public async Task ShouldValidateItemHash()
+        {
+            //Arrange
+            var exportId = "lch-4C9D";
+            var locationId = "SC_MH_1";
+            var client = BuildClient();
+            var result = await client.GetCreativeAsync(exportId, locationId);
+
+            var creative = result?.FirstOrDefault()?.Items?.First();
+
+            //Act
+            var isValidHash = await client.ValidateItemHashAsync(creative);
+
+            //Assert
+            Assert.IsTrue(isValidHash);
+        }
+
         private LayoutDriveClient BuildClient()
         {
             return new LayoutDriveClient(Token);

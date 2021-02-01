@@ -13,6 +13,12 @@ namespace Lucit.LayoutDrive.Client.Models
         public int Height { get; set; }
         public int Weight { get; set; }
 
+        [JsonProperty("hash")]
+        public string Hash { get; set; }
+
+        [JsonProperty("hash_algo")]
+        public string HashAlgorithm { get; set; }
+
         [JsonProperty("weight_pct")]
         public decimal WeightPercentage { get; set; }
 
