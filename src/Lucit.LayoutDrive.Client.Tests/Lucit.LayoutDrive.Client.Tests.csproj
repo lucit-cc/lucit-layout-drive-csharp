@@ -17,4 +17,14 @@
     <ProjectReference Include="..\Lucit.LayoutDrive.Client\Lucit.LayoutDrive.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="responses\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="responses\creative_image.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
